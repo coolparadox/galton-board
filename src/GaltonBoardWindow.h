@@ -38,6 +38,8 @@ class GaltonBoardWindow : public Gtk::Window
 
  protected:
 
+    void refresh_controls();
+
     CreditManager _creditManager;
 
     BoardDrawingArea _boardDrawingArea;
@@ -47,6 +49,10 @@ class GaltonBoardWindow : public Gtk::Window
     Gtk::Button _addCreditButton;
     Gtk::Button _withdrawCreditsButton;
     Gtk::Button _playButton;
+
+    void on_add_credit_clicked();
+    void on_withdraw_credits_clicked();
+    void on_play_clicked();
 
 };
 

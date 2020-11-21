@@ -43,14 +43,14 @@ GaltonBoardWindow::GaltonBoardWindow(CreditManager creditManager)
     topBox->set_border_width(5);
     topBox->set_homogeneous(false);
 
-    // Board drawing area
+    // UI: Board drawing area
     topBox->pack_start(_boardDrawingArea);
 
-    // User controls
+    // UI: User controls
     Gtk::Box* controlsBox { Gtk::make_managed<Gtk::Box>(Gtk::ORIENTATION_HORIZONTAL, 10) };
     topBox->pack_start(*controlsBox);
 
-    // Credits in
+    // UI: Credits in
     Gtk::Frame* frame_in { Gtk::make_managed<Gtk::Frame>("Credits In") };
     controlsBox->pack_start(*frame_in);
     Gtk::Box* box_in { Gtk::make_managed<Gtk::Box>(Gtk::ORIENTATION_VERTICAL, 5) };
@@ -58,7 +58,7 @@ GaltonBoardWindow::GaltonBoardWindow(CreditManager creditManager)
     box_in->pack_start(_creditsInLabel);
     box_in->pack_start(_addCreditButton);
 
-    // Credits out
+    // UI: Credits out
     Gtk::Frame* frame_out { Gtk::make_managed<Gtk::Frame>("Credits Out") };
     controlsBox->pack_start(*frame_out);
     Gtk::Box* box_out { Gtk::make_managed<Gtk::Box>(Gtk::ORIENTATION_VERTICAL, 5) };
@@ -66,7 +66,7 @@ GaltonBoardWindow::GaltonBoardWindow(CreditManager creditManager)
     box_out->pack_start(_creditsOutLabel);
     box_out->pack_start(_withdrawCreditsButton);
 
-    // Play count
+    // UI: Play count
     Gtk::Frame* frame_play { Gtk::make_managed<Gtk::Frame>("Play Count") };
     controlsBox->pack_start(*frame_play);
     Gtk::Box* box_play { Gtk::make_managed<Gtk::Box>(Gtk::ORIENTATION_VERTICAL, 5) };
@@ -74,16 +74,47 @@ GaltonBoardWindow::GaltonBoardWindow(CreditManager creditManager)
     box_play->pack_start(_nRoundsLabel);
     box_play->pack_start(_playButton);
 
+    // UI: refresh state
+    refresh_controls();
     show_all_children();
 
-    // m_button.signal_clicked().connect(sigc::mem_fun(*this, &GaltonBoardWindow::on_button_clicked));
+    /*
+     * Hook user events
+     */
+
+    _addCreditButton.signal_clicked().connect(sigc::mem_fun(*this, &GaltonBoardWindow::on_add_credit_clicked));
+    _withdrawCreditsButton.signal_clicked().connect(sigc::mem_fun(*this, &GaltonBoardWindow::on_withdraw_credits_clicked));
+    _playButton.signal_clicked().connect(sigc::mem_fun(*this, &GaltonBoardWindow::on_play_clicked));
+
 }
 
 GaltonBoardWindow::~GaltonBoardWindow()
 {
 }
 
-//void GaltonBoardWindow::on_button_clicked()
-//{
-//    std::cout << "Hello World" << std::endl;
-//}
+void GaltonBoardWindow::refresh_controls()
+{
+    _withdrawCreditsButton.set_sensitive(_creditManager.can_withdraw());
+    _playButton.set_sensitive(_creditManager.can_play());
+    _creditsInLabel.set_text(std::to_string(_creditManager.get_remaining_credits()));
+    _creditsOutLabel.set_text(std::to_string(_creditManager.get_withdrawed_credits()));
+    _nRoundsLabel.set_text(std::to_string(_creditManager.get_play_count()));
+}
+
+void GaltonBoardWindow::on_add_credit_clicked()
+{
+    _creditManager.add_credit();
+    refresh_controls();
+}
+
+void GaltonBoardWindow::on_withdraw_credits_clicked()
+{
+    _creditManager.withdraw_credits();
+    refresh_controls();
+}
+
+void GaltonBoardWindow::on_play_clicked()
+{
+    _creditManager.register_play();
+    refresh_controls();
+}

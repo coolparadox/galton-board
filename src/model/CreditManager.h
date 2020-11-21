@@ -28,11 +28,6 @@ class CreditManager
     CreditManager();
     virtual ~CreditManager();
 
- protected:
-    unsigned int _remaining_credits;
-    unsigned int _withdrawed_credits;
-    unsigned int _play_counter;
-
     bool can_withdraw() const;
     bool can_play() const;
 
@@ -43,6 +38,11 @@ class CreditManager
     void add_credit();
     void withdraw_credits();
     void register_play();
+
+ protected:
+    unsigned int _remaining_credits;
+    unsigned int _withdrawed_credits;
+    unsigned int _play_counter;
 
 };
 
