@@ -53,4 +53,5 @@ galton_board_SOURCES = \
 	main.cpp
 #galton_board_CPPFLAGS = -I@srcdir@/../../src
 #galton_board_LDADD = @builddir@/../../src/.libs/libdn_clarith.la -lCppUTest -lCppUTestExt
-
+galton_board_CPPFLAGS = $(GTKMM_CFLAGS)
+galton_board_LDADD = $(GTKMM_LIBS)
