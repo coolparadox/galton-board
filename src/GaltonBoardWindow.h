@@ -22,6 +22,7 @@
 #define SRC_GALTONBOARDWINDOW_H
 
 #include <gtkmm/button.h>
+#include <gtkmm/drawingarea.h>
 #include <gtkmm/window.h>
 
 class GaltonBoardWindow : public Gtk::Window
@@ -32,11 +33,16 @@ class GaltonBoardWindow : public Gtk::Window
     virtual ~GaltonBoardWindow();
 
  protected:
-    //Signal handlers:
     void on_button_clicked();
 
-    //Member widgets:
-    Gtk::Button m_button;
+    Gtk::DrawingArea _boardDrawingArea;
+    Gtk::Button _addCreditButton;
+    Gtk::Button _withdrawCreditsButton;
+    Gtk::Button _playButton;
+
+//    Gtk::Box _topBox;
+//    Gtk::ButtonBox _topButtonBox;
+
 };
 
 #endif // SRC_GALTONBOARDWINDOW_H

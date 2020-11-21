@@ -18,24 +18,38 @@
 * along with galton-board  If not, see <http://www.gnu.org/licenses/>
 */
 
-#include "GaltonBoardWindow.h"
 #include <iostream>
 
+#include <gtkmm/box.h>
+#include <gtkmm/buttonbox.h>
+
+#include "GaltonBoardWindow.h"
+
 GaltonBoardWindow::GaltonBoardWindow()
-    : m_button("Hello World")   // creates a new button with label "Hello World".
+    : _addCreditButton("Add Credit"),
+      _withdrawCreditsButton("Withdraw Credits"),
+      _playButton("Play")
 {
-    // Sets the border width of the window.
-    set_border_width(10);
+    /*
+     * Compose the UI:
+     * - drawing area
+     * - button row
+     */
+    set_border_width(5);
+    Gtk::Box* topBox { Gtk::make_managed<Gtk::Box>(Gtk::ORIENTATION_VERTICAL) };
+    add(*topBox);
+    topBox->set_border_width(5);
+    topBox->set_homogeneous(false);
+    topBox->pack_start(_boardDrawingArea);
+    _boardDrawingArea.set_size_request(400, 400);
+    Gtk::ButtonBox* buttons { Gtk::make_managed<Gtk::ButtonBox>(Gtk::ORIENTATION_HORIZONTAL) };
+    topBox->pack_start(*buttons);
+    buttons->add(_addCreditButton);
+    buttons->add(_withdrawCreditsButton);
+    buttons->add(_playButton);
+    show_all_children();
 
-    // When the button receives the "clicked" signal, it will call the
-    // on_button_clicked() method defined below.
-    m_button.signal_clicked().connect(sigc::mem_fun(*this, &GaltonBoardWindow::on_button_clicked));
-
-    // This packs the button into the Window (a container).
-    add(m_button);
-
-    // The final step is to display this newly created widget...
-    m_button.show();
+    // m_button.signal_clicked().connect(sigc::mem_fun(*this, &GaltonBoardWindow::on_button_clicked));
 }
 
 GaltonBoardWindow::~GaltonBoardWindow()
