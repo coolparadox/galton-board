@@ -20,30 +20,59 @@
 
 #include <gtkmm/box.h>
 #include <gtkmm/buttonbox.h>
+#include <gtkmm/frame.h>
 
 #include "GaltonBoardWindow.h"
 
 GaltonBoardWindow::GaltonBoardWindow()
-    : _addCreditButton("Add Credit"),
-      _withdrawCreditsButton("Withdraw Credits"),
-      _playButton("Play")
+    : _addCreditButton("CREDIT IN"),
+      _withdrawCreditsButton("CREDITS OUT"),
+      _playButton("START"),
+      _creditsInLabel("0"),
+      _creditsOutLabel("0"),
+      _nRoundsLabel("0")
 {
     /*
      * Compose the UI:
-     * - drawing area
-     * - button row
      */
+
     set_border_width(5);
-    Gtk::Box* topBox { Gtk::make_managed<Gtk::Box>(Gtk::ORIENTATION_VERTICAL, 5) };
+    Gtk::Box* topBox { Gtk::make_managed<Gtk::Box>(Gtk::ORIENTATION_VERTICAL, 10) };
     add(*topBox);
     topBox->set_border_width(5);
     topBox->set_homogeneous(false);
+
+    // Board drawing area
     topBox->pack_start(_boardDrawingArea);
-    Gtk::ButtonBox* buttons { Gtk::make_managed<Gtk::ButtonBox>(Gtk::ORIENTATION_HORIZONTAL) };
-    topBox->pack_start(*buttons);
-    buttons->add(_addCreditButton);
-    buttons->add(_withdrawCreditsButton);
-    buttons->add(_playButton);
+
+    // User controls
+    Gtk::Box* controlsBox { Gtk::make_managed<Gtk::Box>(Gtk::ORIENTATION_HORIZONTAL, 10) };
+    topBox->pack_start(*controlsBox);
+
+    // Credits in
+    Gtk::Frame* frame_in { Gtk::make_managed<Gtk::Frame>("Credits In") };
+    controlsBox->pack_start(*frame_in);
+    Gtk::Box* box_in { Gtk::make_managed<Gtk::Box>(Gtk::ORIENTATION_VERTICAL, 5) };
+    frame_in->add(*box_in);
+    box_in->pack_start(_creditsInLabel);
+    box_in->pack_start(_addCreditButton);
+
+    // Credits out
+    Gtk::Frame* frame_out { Gtk::make_managed<Gtk::Frame>("Credits Out") };
+    controlsBox->pack_start(*frame_out);
+    Gtk::Box* box_out { Gtk::make_managed<Gtk::Box>(Gtk::ORIENTATION_VERTICAL, 5) };
+    frame_out->add(*box_out);
+    box_out->pack_start(_creditsOutLabel);
+    box_out->pack_start(_withdrawCreditsButton);
+
+    // Play count
+    Gtk::Frame* frame_play { Gtk::make_managed<Gtk::Frame>("Play Count") };
+    controlsBox->pack_start(*frame_play);
+    Gtk::Box* box_play { Gtk::make_managed<Gtk::Box>(Gtk::ORIENTATION_VERTICAL, 5) };
+    frame_play->add(*box_play);
+    box_play->pack_start(_nRoundsLabel);
+    box_play->pack_start(_playButton);
+
     show_all_children();
 
     // m_button.signal_clicked().connect(sigc::mem_fun(*this, &GaltonBoardWindow::on_button_clicked));

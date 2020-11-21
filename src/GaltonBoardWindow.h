@@ -22,6 +22,7 @@
 #define SRC_GALTONBOARDWINDOW_H
 
 #include <gtkmm/button.h>
+#include <gtkmm/label.h>
 #include <gtkmm/window.h>
 
 #include "BoardDrawingArea.h"
@@ -35,6 +36,9 @@ class GaltonBoardWindow : public Gtk::Window
 
  protected:
     BoardDrawingArea _boardDrawingArea;
+    Gtk::Label _creditsInLabel;
+    Gtk::Label _creditsOutLabel;
+    Gtk::Label _nRoundsLabel;
     Gtk::Button _addCreditButton;
     Gtk::Button _withdrawCreditsButton;
     Gtk::Button _playButton;
