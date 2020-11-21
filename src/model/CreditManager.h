@@ -18,36 +18,32 @@
  * along with galton-board  If not, see <http://www.gnu.org/licenses/>
  */
 
-#ifndef SRC_GALTONBOARDWINDOW_H
-#define SRC_GALTONBOARDWINDOW_H
+#ifndef SRC_MODEL_GAMEMANAGER_H
+#define SRC_MODEL_GAMEMANAGER_H
 
-#include <gtkmm/button.h>
-#include <gtkmm/label.h>
-#include <gtkmm/window.h>
-
-#include "BoardDrawingArea.h"
-#include "model/CreditManager.h"
-
-class GaltonBoardWindow : public Gtk::Window
+class CreditManager
 {
 
  public:
-
-    GaltonBoardWindow(CreditManager creditManager);
-    virtual ~GaltonBoardWindow();
+    CreditManager();
+    virtual ~CreditManager();
 
  protected:
+    unsigned int _remaining_credits;
+    unsigned int _withdrawed_credits;
+    unsigned int _play_counter;
 
-    CreditManager _creditManager;
+    bool can_withdraw() const;
+    bool can_play() const;
 
-    BoardDrawingArea _boardDrawingArea;
-    Gtk::Label _creditsInLabel;
-    Gtk::Label _creditsOutLabel;
-    Gtk::Label _nRoundsLabel;
-    Gtk::Button _addCreditButton;
-    Gtk::Button _withdrawCreditsButton;
-    Gtk::Button _playButton;
+    unsigned int get_remaining_credits() const;
+    unsigned int get_withdrawed_credits() const;
+    unsigned int get_play_count() const;
+
+    void add_credit();
+    void withdraw_credits();
+    void register_play();
 
 };
 
-#endif // SRC_GALTONBOARDWINDOW_H
+#endif // SRC_MODEL_GAMEMANAGER_H

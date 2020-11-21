@@ -25,6 +25,6 @@
 int main(int argc, char *argv[])
 {
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "coolparadox.com.games.galton-board");
-    GaltonBoardWindow window;
+    GaltonBoardWindow window(CreditManager{});
     return app->run(window);
 }

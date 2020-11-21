@@ -24,8 +24,9 @@
 
 #include "GaltonBoardWindow.h"
 
-GaltonBoardWindow::GaltonBoardWindow()
-    : _addCreditButton("CREDIT IN"),
+GaltonBoardWindow::GaltonBoardWindow(CreditManager creditManager)
+    : _creditManager(creditManager),
+      _addCreditButton("CREDIT IN"),
       _withdrawCreditsButton("CREDITS OUT"),
       _playButton("START"),
       _creditsInLabel("0"),
@@ -33,7 +34,7 @@ GaltonBoardWindow::GaltonBoardWindow()
       _nRoundsLabel("0")
 {
     /*
-     * Compose the UI:
+     * Compose the UI
      */
 
     set_border_width(5);
