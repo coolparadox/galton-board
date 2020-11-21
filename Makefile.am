@@ -36,4 +36,6 @@ galton_board_LDADD = $(GTKMM_LIBS)
 galton_board_SOURCES = \
 	main.cpp \
 	src/GaltonBoardWindow.h \
-	src/GaltonBoardWindow.cpp
+	src/GaltonBoardWindow.cpp \
+	src/BoardDrawingArea.h \
+	src/BoardDrawingArea.cpp

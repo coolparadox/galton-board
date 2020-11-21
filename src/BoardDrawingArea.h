@@ -18,27 +18,20 @@
  * along with galton-board  If not, see <http://www.gnu.org/licenses/>
  */
 
-#ifndef SRC_GALTONBOARDWINDOW_H
-#define SRC_GALTONBOARDWINDOW_H
+#ifndef SRC_BOARDDRAWINGAREA_H
+#define SRC_BOARDDRAWINGAREA_H
 
-#include <gtkmm/button.h>
-#include <gtkmm/window.h>
+#include <gtkmm/drawingarea.h>
 
-#include "BoardDrawingArea.h"
-
-class GaltonBoardWindow : public Gtk::Window
+class BoardDrawingArea : public Gtk::DrawingArea
 {
 
  public:
-    GaltonBoardWindow();
-    virtual ~GaltonBoardWindow();
+    BoardDrawingArea();
+    virtual ~BoardDrawingArea();
 
  protected:
-    BoardDrawingArea _boardDrawingArea;
-    Gtk::Button _addCreditButton;
-    Gtk::Button _withdrawCreditsButton;
-    Gtk::Button _playButton;
 
 };
 
-#endif // SRC_GALTONBOARDWINDOW_H
+#endif // SRC_BOARDDRAWINGAREA_H

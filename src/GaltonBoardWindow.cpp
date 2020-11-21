@@ -18,8 +18,6 @@
 * along with galton-board  If not, see <http://www.gnu.org/licenses/>
 */
 
-#include <iostream>
-
 #include <gtkmm/box.h>
 #include <gtkmm/buttonbox.h>
 
@@ -56,7 +54,7 @@ GaltonBoardWindow::~GaltonBoardWindow()
 {
 }
 
-void GaltonBoardWindow::on_button_clicked()
-{
-    std::cout << "Hello World" << std::endl;
-}
+//void GaltonBoardWindow::on_button_clicked()
+//{
+//    std::cout << "Hello World" << std::endl;
+//}
