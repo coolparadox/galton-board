@@ -27,10 +27,18 @@ class BoardDrawingArea : public Gtk::DrawingArea
 {
 
  public:
+
     BoardDrawingArea();
+    BoardDrawingArea(unsigned int n_levels, unsigned int ball_size, unsigned int peg_size);
     virtual ~BoardDrawingArea();
 
  protected:
+
+    unsigned int _n_levels;
+    unsigned int _ball_size;
+    unsigned int _peg_size;
+    unsigned int _board_size;
+
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
 
 };

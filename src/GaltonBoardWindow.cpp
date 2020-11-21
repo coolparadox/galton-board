@@ -34,12 +34,11 @@ GaltonBoardWindow::GaltonBoardWindow()
      * - button row
      */
     set_border_width(5);
-    Gtk::Box* topBox { Gtk::make_managed<Gtk::Box>(Gtk::ORIENTATION_VERTICAL) };
+    Gtk::Box* topBox { Gtk::make_managed<Gtk::Box>(Gtk::ORIENTATION_VERTICAL, 5) };
     add(*topBox);
     topBox->set_border_width(5);
     topBox->set_homogeneous(false);
     topBox->pack_start(_boardDrawingArea);
-    _boardDrawingArea.set_size_request(400, 400);
     Gtk::ButtonBox* buttons { Gtk::make_managed<Gtk::ButtonBox>(Gtk::ORIENTATION_HORIZONTAL) };
     topBox->pack_start(*buttons);
     buttons->add(_addCreditButton);
