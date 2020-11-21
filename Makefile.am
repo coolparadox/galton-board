@@ -35,5 +35,5 @@ galton_board_CPPFLAGS = $(GTKMM_CFLAGS)
 galton_board_LDADD = $(GTKMM_LIBS)
 galton_board_SOURCES = \
 	main.cpp \
-	src/helloworld.h \
-	src/helloworld.cpp
+	src/GaltonBoardWindow.h \
+	src/GaltonBoardWindow.cpp

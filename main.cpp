@@ -18,13 +18,13 @@
  * along with galton-board  If not, see <http://www.gnu.org/licenses/>
  */
 
-#include "src/helloworld.h"
 // #include <gtkmm.h>
 #include <gtkmm/application.h>
+#include "src/GaltonBoardWindow.h"
 
 int main(int argc, char *argv[])
 {
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "coolparadox.com.games.galton-board");
-    HelloWorld helloworld;
-    return app->run(helloworld);
+    GaltonBoardWindow window;
+    return app->run(window);
 }

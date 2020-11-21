@@ -18,18 +18,18 @@
  * along with galton-board  If not, see <http://www.gnu.org/licenses/>
  */
 
-#ifndef SRC_HELLOWORLD_H
-#define SRC_HELLOWORLD_H
+#ifndef SRC_GALTONBOARDWINDOW_H
+#define SRC_GALTONBOARDWINDOW_H
 
 #include <gtkmm/button.h>
 #include <gtkmm/window.h>
 
-class HelloWorld : public Gtk::Window
+class GaltonBoardWindow : public Gtk::Window
 {
 
  public:
-    HelloWorld();
-    virtual ~HelloWorld();
+    GaltonBoardWindow();
+    virtual ~GaltonBoardWindow();
 
  protected:
     //Signal handlers:
@@ -39,4 +39,4 @@ class HelloWorld : public Gtk::Window
     Gtk::Button m_button;
 };
 
-#endif // SRC_HELLOWORLD_H
+#endif // SRC_GALTONBOARDWINDOW_H
