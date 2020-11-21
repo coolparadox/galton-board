@@ -1,5 +1,5 @@
 #
-# Copyright 2018 Rafael Lorandi <coolparadox@gmail.com>
+# Copyright 2020 Rafael Lorandi <coolparadox@gmail.com>
 #
 # This file is part of galton-board, a naive game-like simulation of
 # a Galton board.
@@ -43,7 +43,7 @@ AC_LANG([C++])
 #    AC_MSG_ERROR([missing C++ Guidelines Support Library])
 #])
 
-PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0])
+PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0 >= 3.8.0])
 
 #AC_MSG_CHECKING([whether to build documentation])
 #AC_ARG_ENABLE(

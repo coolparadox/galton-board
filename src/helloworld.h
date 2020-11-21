@@ -18,13 +18,25 @@
  * along with galton-board  If not, see <http://www.gnu.org/licenses/>
  */
 
-#include "src/helloworld.h"
-// #include <gtkmm.h>
-#include <gtkmm/application.h>
+#ifndef SRC_HELLOWORLD_H
+#define SRC_HELLOWORLD_H
 
-int main(int argc, char *argv[])
+#include <gtkmm/button.h>
+#include <gtkmm/window.h>
+
+class HelloWorld : public Gtk::Window
 {
-    Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "coolparadox.com.games.galton-board");
-    HelloWorld helloworld;
-    return app->run(helloworld);
-}
+
+ public:
+    HelloWorld();
+    virtual ~HelloWorld();
+
+ protected:
+    //Signal handlers:
+    void on_button_clicked();
+
+    //Member widgets:
+    Gtk::Button m_button;
+};
+
+#endif // SRC_HELLOWORLD_H
