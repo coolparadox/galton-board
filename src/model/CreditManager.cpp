@@ -35,6 +35,11 @@ CreditManager::~CreditManager()
 {
 }
 
+bool CreditManager::can_deposit() const
+{
+    return true;
+}
+
 bool CreditManager::can_withdraw() const
 {
     return _remaining_credits > 0;

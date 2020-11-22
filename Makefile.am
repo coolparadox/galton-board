@@ -40,4 +40,6 @@ galton_board_SOURCES = \
 	src/BoardDrawingArea.h \
 	src/BoardDrawingArea.cpp \
 	src/model/CreditManager.h \
-	src/model/CreditManager.cpp
+	src/model/CreditManager.cpp \
+	src/model/PlayTracker.h \
+	src/model/PlayTracker.cpp

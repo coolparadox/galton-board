@@ -18,20 +18,25 @@
 * along with galton-board  If not, see <http://www.gnu.org/licenses/>
 */
 
+#include <glibmm/main.h>
 #include <gtkmm/box.h>
 #include <gtkmm/buttonbox.h>
 #include <gtkmm/frame.h>
 
 #include "GaltonBoardWindow.h"
 
-GaltonBoardWindow::GaltonBoardWindow(CreditManager creditManager)
+GaltonBoardWindow::GaltonBoardWindow(CreditManager creditManager, PlayTracker playTracker)
     : _creditManager(creditManager),
+      _playTracker(playTracker),
       _addCreditButton("CREDIT IN"),
       _withdrawCreditsButton("CREDITS OUT"),
       _playButton("START"),
       _creditsInLabel("0"),
       _creditsOutLabel("0"),
-      _nRoundsLabel("0")
+      _nRoundsLabel("0"),
+      _play_timer_id(0),
+      _is_playing(false),
+      _is_paused(false)
 {
     /*
      * Compose the UI
@@ -94,8 +99,27 @@ GaltonBoardWindow::~GaltonBoardWindow()
 
 void GaltonBoardWindow::refresh_controls()
 {
-    _withdrawCreditsButton.set_sensitive(_creditManager.can_withdraw());
+    // Refresh buttons
+    _addCreditButton.set_sensitive(!_is_playing && _creditManager.can_deposit());
+    _withdrawCreditsButton.set_sensitive(!_is_playing && _creditManager.can_withdraw());
     _playButton.set_sensitive(_creditManager.can_play());
+    if (_is_playing)
+    {
+        if (_is_paused)
+        {
+            _playButton.set_label("RESUME");
+        }
+        else
+        {
+            _playButton.set_label("PAUSE");
+        }
+    }
+    else
+    {
+        _playButton.set_label("START");
+    }
+
+    // Refresh account balance
     _creditsInLabel.set_text(std::to_string(_creditManager.get_remaining_credits()));
     _creditsOutLabel.set_text(std::to_string(_creditManager.get_withdrawed_credits()));
     _nRoundsLabel.set_text(std::to_string(_creditManager.get_play_count()));
@@ -115,6 +139,47 @@ void GaltonBoardWindow::on_withdraw_credits_clicked()
 
 void GaltonBoardWindow::on_play_clicked()
 {
-    _creditManager.register_play();
+    if (_is_playing && _is_paused)
+    {
+        // Simulation is paused; resume it.
+        _is_paused = false;
+        return;
+    }
+
+    if (_is_playing)
+    {
+        // Simulation is ongoing; pause it.
+        _is_paused = true;
+        refresh_controls();
+        return;
+    }
+
+    // Simulation is not happening; start it.
+    _is_playing = true;
+    _is_paused = false;
+    _playTracker.reset();
+    // Start a periodic timer to sync the steps of the simulation
+    sigc::slot<bool> play_timer_slot = sigc::bind(sigc::mem_fun(*this, &GaltonBoardWindow::on_play_timer), _play_timer_id);
+    _play_timer = Glib::signal_timeout().connect(play_timer_slot, 1000);
     refresh_controls();
+}
+
+bool GaltonBoardWindow::on_play_timer(int timer_id)
+{
+    if (!_is_playing || _is_paused)
+    {
+        return true;
+    }
+    if (!_playTracker.step())
+    {
+        // The simulation came to an end; stop the timer.
+        _play_timer.disconnect();
+        _play_timer_id = 0;
+        _is_playing = false;
+        _is_paused = false;
+        _creditManager.register_play();
+    }
+    refresh_controls();
+    return true;
+
 }

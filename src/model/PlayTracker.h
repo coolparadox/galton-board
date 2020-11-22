@@ -18,13 +18,23 @@
  * along with galton-board  If not, see <http://www.gnu.org/licenses/>
  */
 
-// #include <gtkmm.h>
-#include <gtkmm/application.h>
-#include "src/GaltonBoardWindow.h"
+#ifndef SRC_MODEL_PLAYTRACKER_H
+#define SRC_MODEL_PLAYTRACKER_H
 
-int main(int argc, char *argv[])
+class PlayTracker
 {
-    Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "coolparadox.com.games.galton-board");
-    GaltonBoardWindow window(CreditManager{}, PlayTracker{});
-    return app->run(window);
-}
+
+ public:
+    PlayTracker();
+    virtual ~PlayTracker();
+
+    void reset();
+    bool step();
+
+ protected:
+
+    unsigned int _n;
+
+};
+
+#endif // SRC_MODEL_PLAYTRACKER_H

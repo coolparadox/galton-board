@@ -28,6 +28,7 @@ class CreditManager
     CreditManager();
     virtual ~CreditManager();
 
+    bool can_deposit() const;
     bool can_withdraw() const;
     bool can_play() const;
 

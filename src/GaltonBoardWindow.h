@@ -27,20 +27,32 @@
 
 #include "BoardDrawingArea.h"
 #include "model/CreditManager.h"
+#include "model/PlayTracker.h"
 
 class GaltonBoardWindow : public Gtk::Window
 {
 
  public:
 
-    GaltonBoardWindow(CreditManager creditManager);
+    GaltonBoardWindow(CreditManager creditManager, PlayTracker playTracker);
     virtual ~GaltonBoardWindow();
 
  protected:
 
     void refresh_controls();
+    void on_add_credit_clicked();
+    void on_withdraw_credits_clicked();
+    void on_play_clicked();
+    bool on_play_timer(int timer_id);
+
+    int _play_timer_id;
+    sigc::connection _play_timer;
+
+    bool _is_playing;
+    bool _is_paused;
 
     CreditManager _creditManager;
+    PlayTracker _playTracker;
 
     BoardDrawingArea _boardDrawingArea;
     Gtk::Label _creditsInLabel;
@@ -49,10 +61,6 @@ class GaltonBoardWindow : public Gtk::Window
     Gtk::Button _addCreditButton;
     Gtk::Button _withdrawCreditsButton;
     Gtk::Button _playButton;
-
-    void on_add_credit_clicked();
-    void on_withdraw_credits_clicked();
-    void on_play_clicked();
 
 };
 
