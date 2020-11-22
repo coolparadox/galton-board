@@ -88,8 +88,8 @@ void BoardDrawingArea::draw_balls(const Cairo::RefPtr<Cairo::Context>& cr)
     for (auto ball = _grid.cbegin(); ball != _grid.cend(); ++ball)
     {
         cr->arc(ball->get_displacement() * (_ball_size + _peg_size) / 2 + _board_size / 2,
-                ball->get_level() * (_ball_size + _peg_size),
-                _ball_size / 2, 0.0, 2.0 * M_PI);
+                ball->get_level() * (_ball_size + _peg_size) + _ball_size / 2 - _peg_size / 2,
+                _ball_size / 2 + _peg_size / 4, 0.0, 2.0 * M_PI);
         cr->stroke();
     }
     cr->restore();
