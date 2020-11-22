@@ -25,10 +25,11 @@
 
 #include "GaltonBoardWindow.h"
 
-GaltonBoardWindow::GaltonBoardWindow(unsigned int n_levels, CreditManager creditManager, PlayTracker playTracker)
-    : _creditManager(creditManager),
+GaltonBoardWindow::GaltonBoardWindow(unsigned int n_levels, std::vector<Ball>& grid, CreditManager creditManager, PlayTracker playTracker)
+    : _grid(grid),
+      _creditManager(creditManager),
       _playTracker(playTracker),
-      _boardDrawingArea(n_levels),
+      _boardDrawingArea(n_levels, grid),
       _addCreditButton("CREDIT IN"),
       _withdrawCreditsButton("CREDITS OUT"),
       _playButton("START"),
@@ -159,9 +160,11 @@ void GaltonBoardWindow::on_play_clicked()
     _is_playing = true;
     _is_paused = false;
     _playTracker.reset();
-    // Start a periodic timer to sync the steps of the simulation
+
+    // Start a periodic timer to sync the steps of the simulation.
     sigc::slot<bool> play_timer_slot = sigc::bind(sigc::mem_fun(*this, &GaltonBoardWindow::on_play_timer), _play_timer_id);
-    _play_timer = Glib::signal_timeout().connect(play_timer_slot, 1000);
+    _play_timer = Glib::signal_timeout().connect(play_timer_slot, 300);
+
     refresh_controls();
 }
 

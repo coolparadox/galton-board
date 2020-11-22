@@ -28,7 +28,7 @@ Ball::Ball(unsigned int id)
       _y(0),
       _stuck(false)
 {
-    std::cerr << "Ball " << _id << ": " << _y << " " << _x << std::endl;
+    std::cerr << "Ball " << _id << ": " << _y << " " << _x << std::endl << std::endl;
 }
 
 Ball::~Ball()
@@ -87,7 +87,7 @@ bool Ball::fall(std::vector<Ball>& grid, unsigned int n_levels, bool toss)
     }
     if (!can_fall_left && !can_fall_right)
     {
-        // Nowhere to fall further.
+        // There is nowhere to fall further.
         _stuck = true;
         return false;
     }
@@ -104,10 +104,11 @@ bool Ball::fall(std::vector<Ball>& grid, unsigned int n_levels, bool toss)
             can_fall_right = false;
         }
     }
-    // Fall.
+    // Fall one level.
     _y += 1;
     if (_y >= max_y)
     {
+        // This is the last level
         _stuck = true;
     }
     if (can_fall_left)

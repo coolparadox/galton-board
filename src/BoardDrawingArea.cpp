@@ -24,13 +24,14 @@
 
 const unsigned int BOARD_MARGIN = 10;
 
-BoardDrawingArea::BoardDrawingArea(unsigned int n_levels)
-    : BoardDrawingArea(n_levels, 60, 5)
+BoardDrawingArea::BoardDrawingArea(unsigned int n_levels, std::vector<Ball> grid)
+    : BoardDrawingArea(n_levels, grid, 60, 5)
 {
 }
 
-BoardDrawingArea::BoardDrawingArea(unsigned int n_levels, unsigned int ball_size, unsigned int peg_size)
+BoardDrawingArea::BoardDrawingArea(unsigned int n_levels, std::vector<Ball> grid, unsigned int ball_size, unsigned int peg_size)
     : _n_levels(n_levels),
+      _grid(grid),
       _ball_size(ball_size),
       _peg_size(peg_size)
 {

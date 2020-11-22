@@ -29,7 +29,7 @@ class PlayTracker
 {
 
  public:
-    PlayTracker(unsigned int n_levels);
+    PlayTracker(unsigned int n_levels, std::vector<Ball>& grid);
     virtual ~PlayTracker();
 
     void reset();
@@ -37,15 +37,14 @@ class PlayTracker
 
  protected:
 
-    int get_random_bit();
+    bool get_random_toss();
 
     unsigned int _n_levels;
     unsigned int _next_ball_id;
-    std::vector<Ball> _grid;
+    std::vector<Ball>& _grid;
 
-    //std::random_device _rd;
-    //std::mt19937 _gen;
-    //std::uniform_int_distribution<int> _dist;
+    std::default_random_engine _gen;
+    std::uniform_int_distribution<int> _dist;
 
 };
 

@@ -23,13 +23,15 @@
 
 #include <gtkmm/drawingarea.h>
 
+#include "model/Ball.h"
+
 class BoardDrawingArea : public Gtk::DrawingArea
 {
 
  public:
 
-    BoardDrawingArea(unsigned int n_levels);
-    BoardDrawingArea(unsigned int n_levels, unsigned int ball_size, unsigned int peg_size);
+    BoardDrawingArea(unsigned int n_levels, std::vector<Ball> grid);
+    BoardDrawingArea(unsigned int n_levels, std::vector<Ball> grid, unsigned int ball_size, unsigned int peg_size);
     virtual ~BoardDrawingArea();
 
  protected:
@@ -38,6 +40,7 @@ class BoardDrawingArea : public Gtk::DrawingArea
     unsigned int _ball_size;
     unsigned int _peg_size;
     unsigned int _board_size;
+    std::vector<Ball>& _grid;
 
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
 

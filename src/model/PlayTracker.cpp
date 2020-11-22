@@ -21,11 +21,11 @@
 #include <cassert>
 #include "PlayTracker.h"
 
-PlayTracker::PlayTracker(unsigned int n_levels)
+PlayTracker::PlayTracker(unsigned int n_levels, std::vector<Ball>& grid)
     : _n_levels(n_levels),
-      _next_ball_id(0)
-      //_gen(_rd()),
-      //_dist(0,1)
+      _grid(grid),
+      _next_ball_id(0),
+      _dist(0,1)
 {
     assert(n_levels > 0);
 }
@@ -47,7 +47,7 @@ bool PlayTracker::step()
     for (auto ball = _grid.begin(); ball != _grid.end(); ++ball)
     {
         bool is_top_ball = ball->get_y() == 0;
-        bool has_falled = ball->fall(_grid, _n_levels, get_random_bit());
+        bool has_falled = ball->fall(_grid, _n_levels, get_random_toss());
         if (is_top_ball && !has_falled)
         {
             // The top ball has not moved to a lower level; the board is full.
@@ -62,8 +62,7 @@ bool PlayTracker::step()
     return has_room;
 }
 
-int PlayTracker::get_random_bit()
+bool PlayTracker::get_random_toss()
 {
-    //return _dist(_gen);
-    return true;
+    return _dist(_gen);
 }
