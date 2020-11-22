@@ -24,12 +24,7 @@
 
 const unsigned int BOARD_MARGIN = 10;
 
-BoardDrawingArea::BoardDrawingArea(unsigned int n_levels, std::vector<Ball> grid)
-    : BoardDrawingArea(n_levels, grid, 60, 5)
-{
-}
-
-BoardDrawingArea::BoardDrawingArea(unsigned int n_levels, std::vector<Ball> grid, unsigned int ball_size, unsigned int peg_size)
+BoardDrawingArea::BoardDrawingArea(unsigned int n_levels, std::vector<Ball>& grid, unsigned int ball_size, unsigned int peg_size)
     : _n_levels(n_levels),
       _grid(grid),
       _ball_size(ball_size),
@@ -48,8 +43,7 @@ BoardDrawingArea::~BoardDrawingArea()
 
 bool BoardDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-    const int x_offset = (get_allocated_width() - _board_size) / 2;
-    const int y_offset = (get_allocated_height() - _board_size) / 2;
+    cr->translate((get_allocated_width() - _board_size) / 2, (get_allocated_height() - _board_size) / 2);
 
     // coordinates for the center of the board
     int xc, yc;
@@ -60,9 +54,29 @@ bool BoardDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 
     // draw red lines out from the center of the window
     cr->set_source_rgb(0.8, 0.0, 0.0);
-    cr->move_to(0 + x_offset, 0 + y_offset);
-    cr->line_to(_board_size + x_offset, _board_size + y_offset);
+    cr->move_to(0, 0);
+    cr->line_to(_board_size, _board_size);
     cr->stroke();
 
+    draw_pegs(cr);
+
     return true;
+}
+
+void BoardDrawingArea::draw_pegs(const Cairo::RefPtr<Cairo::Context>& cr)
+{
+    cr->save();
+    cr->set_line_width(2.0);
+    cr->set_source_rgb(0.2, 0.2, 0.2);
+    for (int level = 0; level < _n_levels; ++level)
+    {
+        for (int displacement = -level; displacement <= level; displacement += 2)
+        {
+            cr->arc(_board_size / 2 + displacement * (_ball_size + _peg_size) / 2,
+                    level * (_ball_size + _peg_size) + _ball_size,
+                    _peg_size / 2, 0.0, 2 * M_PI);
+            cr->stroke();
+        }
+    }
+    cr->restore();
 }

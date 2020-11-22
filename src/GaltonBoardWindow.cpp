@@ -18,6 +18,8 @@
 * along with galton-board  If not, see <http://www.gnu.org/licenses/>
 */
 
+#include <cassert>
+
 #include <glibmm/main.h>
 #include <gtkmm/box.h>
 #include <gtkmm/buttonbox.h>
@@ -25,11 +27,10 @@
 
 #include "GaltonBoardWindow.h"
 
-GaltonBoardWindow::GaltonBoardWindow(unsigned int n_levels, std::vector<Ball>& grid, CreditManager creditManager, PlayTracker playTracker)
-    : _grid(grid),
-      _creditManager(creditManager),
+GaltonBoardWindow::GaltonBoardWindow(BoardDrawingArea& boardDrawingArea, CreditManager creditManager, PlayTracker playTracker, unsigned int step_duration_ms)
+    : _creditManager(creditManager),
       _playTracker(playTracker),
-      _boardDrawingArea(n_levels, grid),
+      _boardDrawingArea(boardDrawingArea),
       _addCreditButton("CREDIT IN"),
       _withdrawCreditsButton("CREDITS OUT"),
       _playButton("START"),
@@ -38,8 +39,11 @@ GaltonBoardWindow::GaltonBoardWindow(unsigned int n_levels, std::vector<Ball>& g
       _nRoundsLabel("0"),
       _play_timer_id(0),
       _is_playing(false),
-      _is_paused(false)
+      _is_paused(false),
+      _step_duration_ms(step_duration_ms)
 {
+    assert(_step_duration_ms > 0);
+
     /*
      * Compose the UI
      */
@@ -163,7 +167,7 @@ void GaltonBoardWindow::on_play_clicked()
 
     // Start a periodic timer to sync the steps of the simulation.
     sigc::slot<bool> play_timer_slot = sigc::bind(sigc::mem_fun(*this, &GaltonBoardWindow::on_play_timer), _play_timer_id);
-    _play_timer = Glib::signal_timeout().connect(play_timer_slot, 300);
+    _play_timer = Glib::signal_timeout().connect(play_timer_slot, _step_duration_ms);
 
     refresh_controls();
 }

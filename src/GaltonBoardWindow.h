@@ -34,7 +34,7 @@ class GaltonBoardWindow : public Gtk::Window
 
  public:
 
-    GaltonBoardWindow(unsigned int n_levels, std::vector<Ball>& grid, CreditManager creditManager, PlayTracker playTracker);
+    GaltonBoardWindow(BoardDrawingArea& boardDrawingArea, CreditManager creditManager, PlayTracker playTracker, unsigned int step_duration_ms);
     virtual ~GaltonBoardWindow();
 
  protected:
@@ -50,12 +50,12 @@ class GaltonBoardWindow : public Gtk::Window
 
     bool _is_playing;
     bool _is_paused;
+    unsigned int _step_duration_ms;
 
-    std::vector<Ball>& _grid;
+    BoardDrawingArea& _boardDrawingArea;
     CreditManager _creditManager;
     PlayTracker _playTracker;
 
-    BoardDrawingArea _boardDrawingArea;
     Gtk::Label _creditsInLabel;
     Gtk::Label _creditsOutLabel;
     Gtk::Label _nRoundsLabel;
