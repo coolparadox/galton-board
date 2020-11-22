@@ -42,6 +42,7 @@ class BoardDrawingArea : public Gtk::DrawingArea
     std::vector<Ball>& _grid;
 
     void draw_pegs(const Cairo::RefPtr<Cairo::Context>& cr);
+    void draw_balls(const Cairo::RefPtr<Cairo::Context>& cr);
 
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
 

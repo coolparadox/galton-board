@@ -31,16 +31,16 @@ class Ball
     virtual ~Ball();
 
     unsigned int get_id() const;
-    int get_x() const;
-    int get_y() const;
+    int get_displacement() const;
+    int get_level() const;
     bool is_stuck() const;
     bool fall(std::vector<Ball>& grid, unsigned int n_levels, bool toss);
 
  protected:
 
     unsigned int _id;
-    int _x;
-    int _y;
+    int _displacement;
+    int _level;
     bool _stuck;
 
 };

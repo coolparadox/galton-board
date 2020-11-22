@@ -46,7 +46,7 @@ bool PlayTracker::step()
     bool has_room = true;
     for (auto ball = _grid.begin(); ball != _grid.end(); ++ball)
     {
-        bool is_top_ball = ball->get_y() == 0;
+        bool is_top_ball = ball->get_level() == 0;
         bool has_falled = ball->fall(_grid, _n_levels, get_random_toss());
         if (is_top_ball && !has_falled)
         {

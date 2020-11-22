@@ -24,11 +24,11 @@
 
 Ball::Ball(unsigned int id)
     : _id(id),
-      _x(0),
-      _y(0),
+      _displacement(0),
+      _level(0),
       _stuck(false)
 {
-    std::cerr << "Ball " << _id << ": " << _y << " " << _x << std::endl << std::endl;
+    std::cerr << "Ball " << _id << ": " << _level << " " << _displacement << std::endl << std::endl;
 }
 
 Ball::~Ball()
@@ -40,14 +40,14 @@ unsigned int Ball::get_id() const
     return _id;
 }
 
-int Ball::get_x() const
+int Ball::get_displacement() const
 {
-    return _x;
+    return _displacement;
 }
 
-int Ball::get_y() const
+int Ball::get_level() const
 {
-    return _y;
+    return _level;
 }
 
 bool Ball::is_stuck() const
@@ -63,8 +63,8 @@ bool Ball::fall(std::vector<Ball>& grid, unsigned int n_levels, bool toss)
         return false;
     }
     assert(n_levels > 0);
-    const int max_y = n_levels - 1;
-    if (_y >= max_y)
+    const int max_level = n_levels - 1;
+    if (_level >= max_level)
     {
         // The ball is already at the bottom of the board.
         _stuck = true;
@@ -75,12 +75,12 @@ bool Ball::fall(std::vector<Ball>& grid, unsigned int n_levels, bool toss)
     bool can_fall_right = true;
     for (auto ball = grid.cbegin(); ball != grid.cend(); ++ball)
     {
-        if (ball->get_y() == _y + 1)
+        if (ball->get_level() == _level + 1)
         {
-            if (ball->get_x() == _x - 1) {
+            if (ball->get_displacement() == _displacement - 1) {
                 can_fall_left = false;
             }
-            if (ball->get_x() == _x + 1) {
+            if (ball->get_displacement() == _displacement + 1) {
                 can_fall_right = false;
             }
         }
@@ -105,20 +105,20 @@ bool Ball::fall(std::vector<Ball>& grid, unsigned int n_levels, bool toss)
         }
     }
     // Fall one level.
-    _y += 1;
-    if (_y >= max_y)
+    _level += 1;
+    if (_level >= max_level)
     {
         // This is the last level
         _stuck = true;
     }
     if (can_fall_left)
     {
-        _x -= 1;
+        _displacement -= 1;
     }
     else
     {
-        _x += 1;
+        _displacement += 1;
     }
-    std::cerr << "Fall " << _id << ": " << _y << " " << _x << std::endl;
+    std::cerr << "Fall " << _id << ": " << _level << " " << _displacement << std::endl;
     return true;
 }

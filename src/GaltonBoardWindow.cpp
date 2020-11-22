@@ -187,6 +187,7 @@ bool GaltonBoardWindow::on_play_timer(int timer_id)
         _is_paused = false;
         _creditManager.register_play();
     }
+    _boardDrawingArea.queue_draw();
     refresh_controls();
     return true;
 

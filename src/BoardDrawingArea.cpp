@@ -45,20 +45,21 @@ bool BoardDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
     cr->translate((get_allocated_width() - _board_size) / 2, (get_allocated_height() - _board_size) / 2);
 
-    // coordinates for the center of the board
-    int xc, yc;
-    xc = _board_size / 2;
-    yc = _board_size / 2;
+//    // coordinates for the center of the board
+//    int xc, yc;
+//    xc = _board_size / 2;
+//    yc = _board_size / 2;
 
-    cr->set_line_width(10.0);
-
-    // draw red lines out from the center of the window
-    cr->set_source_rgb(0.8, 0.0, 0.0);
-    cr->move_to(0, 0);
-    cr->line_to(_board_size, _board_size);
-    cr->stroke();
+//    cr->set_line_width(10.0);
+//
+//    // draw red lines out from the center of the window
+//    cr->set_source_rgb(0.8, 0.0, 0.0);
+//    cr->move_to(0, 0);
+//    cr->line_to(_board_size, _board_size);
+//    cr->stroke();
 
     draw_pegs(cr);
+    draw_balls(cr);
 
     return true;
 }
@@ -72,11 +73,24 @@ void BoardDrawingArea::draw_pegs(const Cairo::RefPtr<Cairo::Context>& cr)
     {
         for (int displacement = -level; displacement <= level; displacement += 2)
         {
-            cr->arc(_board_size / 2 + displacement * (_ball_size + _peg_size) / 2,
+            cr->arc(displacement * (_ball_size + _peg_size) / 2 + _board_size / 2,
                     level * (_ball_size + _peg_size) + _ball_size,
-                    _peg_size / 2, 0.0, 2 * M_PI);
+                    _peg_size / 2, 0.0, 2.0 * M_PI);
             cr->stroke();
         }
+    }
+    cr->restore();
+}
+
+void BoardDrawingArea::draw_balls(const Cairo::RefPtr<Cairo::Context>& cr)
+{
+    cr->save();
+    for (auto ball = _grid.cbegin(); ball != _grid.cend(); ++ball)
+    {
+        cr->arc(ball->get_displacement() * (_ball_size + _peg_size) / 2 + _board_size / 2,
+                ball->get_level() * (_ball_size + _peg_size),
+                _ball_size / 2, 0.0, 2.0 * M_PI);
+        cr->stroke();
     }
     cr->restore();
 }
