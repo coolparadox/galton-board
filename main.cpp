@@ -25,6 +25,7 @@
 int main(int argc, char *argv[])
 {
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "coolparadox.com.games.galton-board");
-    GaltonBoardWindow window(CreditManager{}, PlayTracker{});
+    unsigned int n_levels = 8;
+    GaltonBoardWindow window(n_levels, CreditManager{}, PlayTracker(n_levels));
     return app->run(window);
 }

@@ -24,8 +24,8 @@
 
 const unsigned int BOARD_MARGIN = 10;
 
-BoardDrawingArea::BoardDrawingArea()
-    : BoardDrawingArea(8, 60, 5)
+BoardDrawingArea::BoardDrawingArea(unsigned int n_levels)
+    : BoardDrawingArea(n_levels, 60, 5)
 {
 }
 

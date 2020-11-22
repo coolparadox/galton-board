@@ -28,7 +28,7 @@ class BoardDrawingArea : public Gtk::DrawingArea
 
  public:
 
-    BoardDrawingArea();
+    BoardDrawingArea(unsigned int n_levels);
     BoardDrawingArea(unsigned int n_levels, unsigned int ball_size, unsigned int peg_size);
     virtual ~BoardDrawingArea();
 

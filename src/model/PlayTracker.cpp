@@ -18,12 +18,16 @@
 * along with galton-board  If not, see <http://www.gnu.org/licenses/>
 */
 
-#include <iostream>
+#include <cassert>
 #include "PlayTracker.h"
 
-PlayTracker::PlayTracker()
-    : _n(0)
+PlayTracker::PlayTracker(unsigned int n_levels)
+    : _n_levels(n_levels),
+      _next_ball_id(0)
+      //_gen(_rd()),
+      //_dist(0,1)
 {
+    assert(n_levels > 0);
 }
 
 PlayTracker::~PlayTracker()
@@ -32,18 +36,34 @@ PlayTracker::~PlayTracker()
 
 void PlayTracker::reset()
 {
-    std::cout << "reset" << std::endl;
-    _n = 5;
+    _grid.clear();
+    _next_ball_id = 0;
+    _grid.emplace_back(_next_ball_id++);
 }
 
 bool PlayTracker::step()
 {
-    if (!_n)
+    bool has_room = true;
+    for (auto ball = _grid.begin(); ball != _grid.end(); ++ball)
     {
-        std::cout << "end" << std::endl;
-        return false;
+        bool is_top_ball = ball->get_y() == 0;
+        bool has_falled = ball->fall(_grid, _n_levels, get_random_bit());
+        if (is_top_ball && !has_falled)
+        {
+            // The top ball has not moved to a lower level; the board is full.
+            has_room = false;
+        }
     }
-    _n -= 1;
-    std::cout << "step" << std::endl;
+    if (has_room)
+    {
+        // Add another ball.
+        _grid.emplace_back(_next_ball_id++);
+    }
+    return has_room;
+}
+
+int PlayTracker::get_random_bit()
+{
+    //return _dist(_gen);
     return true;
 }

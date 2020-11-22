@@ -25,9 +25,10 @@
 
 #include "GaltonBoardWindow.h"
 
-GaltonBoardWindow::GaltonBoardWindow(CreditManager creditManager, PlayTracker playTracker)
+GaltonBoardWindow::GaltonBoardWindow(unsigned int n_levels, CreditManager creditManager, PlayTracker playTracker)
     : _creditManager(creditManager),
       _playTracker(playTracker),
+      _boardDrawingArea(n_levels),
       _addCreditButton("CREDIT IN"),
       _withdrawCreditsButton("CREDITS OUT"),
       _playButton("START"),

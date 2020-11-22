@@ -18,35 +18,31 @@
  * along with galton-board  If not, see <http://www.gnu.org/licenses/>
  */
 
-#ifndef SRC_MODEL_PLAYTRACKER_H
-#define SRC_MODEL_PLAYTRACKER_H
+#ifndef SRC_MODEL_BALL_H
+#define SRC_MODEL_BALL_H
 
-#include <vector>
+#include <random>
 
-#include "Ball.h"
-
-class PlayTracker
+class Ball
 {
 
  public:
-    PlayTracker(unsigned int n_levels);
-    virtual ~PlayTracker();
+    Ball(unsigned int id);
+    virtual ~Ball();
 
-    void reset();
-    bool step();
+    unsigned int get_id() const;
+    int get_x() const;
+    int get_y() const;
+    bool is_stuck() const;
+    bool fall(std::vector<Ball>& grid, unsigned int n_levels, bool toss);
 
  protected:
 
-    int get_random_bit();
-
-    unsigned int _n_levels;
-    unsigned int _next_ball_id;
-    std::vector<Ball> _grid;
-
-    //std::random_device _rd;
-    //std::mt19937 _gen;
-    //std::uniform_int_distribution<int> _dist;
+    unsigned int _id;
+    int _x;
+    int _y;
+    bool _stuck;
 
 };
 
-#endif // SRC_MODEL_PLAYTRACKER_H
+#endif // SRC_MODEL_BALL_H

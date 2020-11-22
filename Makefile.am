@@ -39,6 +39,8 @@ galton_board_SOURCES = \
 	src/GaltonBoardWindow.cpp \
 	src/BoardDrawingArea.h \
 	src/BoardDrawingArea.cpp \
+	src/model/Ball.h \
+	src/model/Ball.cpp \
 	src/model/CreditManager.h \
 	src/model/CreditManager.cpp \
 	src/model/PlayTracker.h \
