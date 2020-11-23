@@ -24,13 +24,17 @@
 
 const unsigned int BOARD_MARGIN = 10;
 
-BoardDrawingArea::BoardDrawingArea(unsigned int n_levels, std::vector<Ball>& grid, unsigned int ball_size, unsigned int peg_size)
+BoardDrawingArea::BoardDrawingArea(unsigned int n_levels, std::vector<Ball>& grid,
+        unsigned int ball_size, unsigned int peg_size, unsigned int n_colors)
     : _n_levels(n_levels),
       _grid(grid),
       _ball_size(ball_size),
-      _peg_size(peg_size)
+      _peg_size(peg_size),
+      _n_colors(n_colors)
 {
     assert(_n_levels >= 2);
+    assert(_n_colors > 0);
+    assert(_n_colors <= 6);
     assert(_peg_size > 0);
     assert(_ball_size > _peg_size);
     _board_size = _n_levels * (_ball_size + _peg_size) + _peg_size;
@@ -67,7 +71,7 @@ bool BoardDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 void BoardDrawingArea::draw_pegs(const Cairo::RefPtr<Cairo::Context>& cr)
 {
     cr->save();
-    cr->set_line_width(2.0);
+    cr->set_line_width(1.0);
     cr->set_source_rgb(0.2, 0.2, 0.2);
     for (int level = 0; level < _n_levels; ++level)
     {
@@ -76,6 +80,7 @@ void BoardDrawingArea::draw_pegs(const Cairo::RefPtr<Cairo::Context>& cr)
             cr->arc(displacement * (_ball_size + _peg_size) / 2 + _board_size / 2,
                     level * (_ball_size + _peg_size) + _ball_size,
                     _peg_size / 2, 0.0, 2.0 * M_PI);
+            cr->fill_preserve();
             cr->stroke();
         }
     }
@@ -84,13 +89,38 @@ void BoardDrawingArea::draw_pegs(const Cairo::RefPtr<Cairo::Context>& cr)
 
 void BoardDrawingArea::draw_balls(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-    cr->save();
     for (auto ball = _grid.cbegin(); ball != _grid.cend(); ++ball)
     {
+        cr->save();
+        cr->set_line_width(1.0);
+        switch (ball->get_id() % _n_colors)
+        {
+            case 0:
+                cr->set_source_rgb(1, 0, 0);
+                break;
+            case 1:
+                cr->set_source_rgb(0, 1, 0);
+                break;
+            case 2:
+                cr->set_source_rgb(0, 0, 1);
+                break;
+            case 3:
+                cr->set_source_rgb(1, 1, 0);
+                break;
+            case 4:
+                cr->set_source_rgb(1, 0, 1);
+                break;
+            case 5:
+                cr->set_source_rgb(0.5, 0.5, 0.5);
+                break;
+            default:
+                cr->set_source_rgb(0, 0, 0);
+        }
         cr->arc(ball->get_displacement() * (_ball_size + _peg_size) / 2 + _board_size / 2,
                 ball->get_level() * (_ball_size + _peg_size) + _ball_size / 2 - _peg_size / 2,
                 _ball_size / 2 + _peg_size / 4, 0.0, 2.0 * M_PI);
+        cr->fill_preserve();
+        cr->restore();
         cr->stroke();
     }
-    cr->restore();
 }

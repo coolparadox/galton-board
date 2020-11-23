@@ -18,23 +18,46 @@
  * along with galton-board  If not, see <http://www.gnu.org/licenses/>
  */
 
-// #include <gtkmm.h>
 #include <gtkmm/application.h>
 #include "src/GaltonBoardWindow.h"
+
+/*
+ * Application settings
+ */
+
+// Number of levels a ball must fall to get to the bottom
+const unsigned int n_levels = 10;
+
+// Time between each step of the simulation [ms]
+const unsigned int step_duration_ms = 100;
+
+// Diameter of the balls [pixels]
+const unsigned int ball_size = 25;
+
+// Diameter of the pegs [pixels]
+const unsigned int peg_size = 4;
+
+// Length of ball color cycling (maximum 6)
+const unsigned int n_colors = 6;
+
+/*
+ * Some parameters that are defined by the above settings:
+ *
+ * - Total amount of balls entering the simulation: n_balls = n_levels * (n_levels + 1) / 2
+ * - Total simulation time [ms]: sim_time = n_balls * step_duration_ms
+ * - Board size [pixels]: board_size = n_levels * (ball_size + peg_size) + peg_size
+ * - Drawing widget size [pixels]: drawing_size = board_size + 20
+ *
+ * KNOWN ISSUES
+ * The rendering of the drawing widget is based on full redrawing --
+ * it does not scale well with the increase of the number of objects in the scene.
+ */
 
 int main(int argc, char *argv[])
 {
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "coolparadox.com.games.galton-board");
-    unsigned int n_levels = 16;
-    unsigned int ball_size = 30;
-    unsigned int peg_size = 5;
-    unsigned int step_duration_ms = 100;
     std::vector<Ball> grid;
-    BoardDrawingArea boardDrawingArea(n_levels, grid, ball_size, peg_size);
-    GaltonBoardWindow window(
-            boardDrawingArea,
-            CreditManager(),
-            PlayTracker(n_levels, grid),
-            step_duration_ms);
+    BoardDrawingArea boardDrawingArea(n_levels, grid, ball_size, peg_size, n_colors);
+    GaltonBoardWindow window(boardDrawingArea, CreditManager(), PlayTracker(n_levels, grid), step_duration_ms);
     return app->run(window);
 }

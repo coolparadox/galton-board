@@ -30,7 +30,8 @@ class BoardDrawingArea : public Gtk::DrawingArea
 
  public:
 
-    BoardDrawingArea(unsigned int n_levels, std::vector<Ball>& grid, unsigned int ball_size, unsigned int peg_size);
+    BoardDrawingArea(unsigned int n_levels, std::vector<Ball>& grid, unsigned int ball_size,
+            unsigned int peg_size, unsigned int n_colors);
     virtual ~BoardDrawingArea();
 
  protected:
@@ -39,6 +40,7 @@ class BoardDrawingArea : public Gtk::DrawingArea
     unsigned int _ball_size;
     unsigned int _peg_size;
     unsigned int _board_size;
+    unsigned int _n_colors;
     std::vector<Ball>& _grid;
 
     void draw_pegs(const Cairo::RefPtr<Cairo::Context>& cr);

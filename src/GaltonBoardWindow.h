@@ -34,7 +34,8 @@ class GaltonBoardWindow : public Gtk::Window
 
  public:
 
-    GaltonBoardWindow(BoardDrawingArea& boardDrawingArea, CreditManager creditManager, PlayTracker playTracker, unsigned int step_duration_ms);
+    GaltonBoardWindow(BoardDrawingArea& boardDrawingArea, CreditManager creditManager,
+            PlayTracker playTracker, unsigned int step_duration_ms);
     virtual ~GaltonBoardWindow();
 
  protected:

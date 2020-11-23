@@ -27,7 +27,8 @@
 
 #include "GaltonBoardWindow.h"
 
-GaltonBoardWindow::GaltonBoardWindow(BoardDrawingArea& boardDrawingArea, CreditManager creditManager, PlayTracker playTracker, unsigned int step_duration_ms)
+GaltonBoardWindow::GaltonBoardWindow(BoardDrawingArea& boardDrawingArea, CreditManager creditManager,
+        PlayTracker playTracker, unsigned int step_duration_ms)
     : _creditManager(creditManager),
       _playTracker(playTracker),
       _boardDrawingArea(boardDrawingArea),

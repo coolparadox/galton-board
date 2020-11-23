@@ -19,7 +19,7 @@
 */
 
 #include <cassert>
-#include <iostream>
+
 #include "Ball.h"
 
 Ball::Ball(unsigned int id)
@@ -28,7 +28,6 @@ Ball::Ball(unsigned int id)
       _level(0),
       _stuck(false)
 {
-    std::cerr << "Ball " << _id << ": " << _level << " " << _displacement << std::endl << std::endl;
 }
 
 Ball::~Ball()
@@ -119,6 +118,5 @@ bool Ball::fall(std::vector<Ball>& grid, unsigned int n_levels, bool toss)
     {
         _displacement += 1;
     }
-    std::cerr << "Fall " << _id << ": " << _level << " " << _displacement << std::endl;
     return true;
 }
