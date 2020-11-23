@@ -47,32 +47,48 @@ BoardDrawingArea::~BoardDrawingArea()
 
 bool BoardDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
+    draw_background(cr);
     cr->translate((get_allocated_width() - _board_size) / 2, (get_allocated_height() - _board_size) / 2);
-
-//    // coordinates for the center of the board
-//    int xc, yc;
-//    xc = _board_size / 2;
-//    yc = _board_size / 2;
-
-//    cr->set_line_width(10.0);
-//
-//    // draw red lines out from the center of the window
-//    cr->set_source_rgb(0.8, 0.0, 0.0);
-//    cr->move_to(0, 0);
-//    cr->line_to(_board_size, _board_size);
-//    cr->stroke();
-
+    draw_contour(cr);
     draw_pegs(cr);
     draw_balls(cr);
-
     return true;
+}
+
+void BoardDrawingArea::draw_background(const Cairo::RefPtr<Cairo::Context>& cr)
+{
+    cr->save();
+    cr->set_source_rgb(0.5, 0.5, 0.5);
+    cr->set_line_width(1);
+    cr->move_to(0,0);
+    cr->line_to(get_allocated_width(), 0);
+    cr->line_to(get_allocated_width(), get_allocated_height());
+    cr->line_to(0, get_allocated_height());
+    cr->close_path();
+    cr->fill_preserve();
+    cr->stroke();
+    cr->restore();
+}
+
+void BoardDrawingArea::draw_contour(const Cairo::RefPtr<Cairo::Context>& cr)
+{
+    cr->save();
+    cr->set_line_width(1);
+    cr->set_source_rgb(1, 1, 1);
+    cr->move_to(_board_size / 2, -_ball_size - _ball_size / 2);
+    cr->line_to(_board_size + _ball_size, _board_size);
+    cr->line_to(-_ball_size, _board_size);
+    cr->close_path();
+    cr->fill_preserve();
+    cr->stroke();
+    cr->restore();
 }
 
 void BoardDrawingArea::draw_pegs(const Cairo::RefPtr<Cairo::Context>& cr)
 {
     cr->save();
-    cr->set_line_width(1.0);
-    cr->set_source_rgb(0.2, 0.2, 0.2);
+    cr->set_line_width(1);
+    cr->set_source_rgb(0.5, 0.5, 0.5);
     for (int level = 0; level < _n_levels; ++level)
     {
         for (int displacement = -level; displacement <= level; displacement += 2)
@@ -87,40 +103,47 @@ void BoardDrawingArea::draw_pegs(const Cairo::RefPtr<Cairo::Context>& cr)
     cr->restore();
 }
 
+void set_color_from_ball(const Cairo::RefPtr<Cairo::Context>& cr, const Ball& ball);
+
 void BoardDrawingArea::draw_balls(const Cairo::RefPtr<Cairo::Context>& cr)
 {
     for (auto ball = _grid.cbegin(); ball != _grid.cend(); ++ball)
     {
         cr->save();
         cr->set_line_width(1.0);
-        switch (ball->get_id() % _n_colors)
-        {
-            case 0:
-                cr->set_source_rgb(1, 0, 0);
-                break;
-            case 1:
-                cr->set_source_rgb(0, 1, 0);
-                break;
-            case 2:
-                cr->set_source_rgb(0, 0, 1);
-                break;
-            case 3:
-                cr->set_source_rgb(1, 1, 0);
-                break;
-            case 4:
-                cr->set_source_rgb(1, 0, 1);
-                break;
-            case 5:
-                cr->set_source_rgb(0.5, 0.5, 0.5);
-                break;
-            default:
-                cr->set_source_rgb(0, 0, 0);
-        }
+        set_color_from_ball(cr, *ball);
         cr->arc(ball->get_displacement() * (_ball_size + _peg_size) / 2 + _board_size / 2,
                 ball->get_level() * (_ball_size + _peg_size) + _ball_size / 2 - _peg_size / 2,
                 _ball_size / 2 + _peg_size / 4, 0.0, 2.0 * M_PI);
         cr->fill_preserve();
         cr->restore();
         cr->stroke();
+    }
+}
+
+void BoardDrawingArea::set_color_from_ball(const Cairo::RefPtr<Cairo::Context>& cr, const Ball& ball)
+{
+    switch (ball.get_id() % _n_colors)
+    {
+        case 0:
+            cr->set_source_rgb(1, 0, 0);
+            break;
+        case 1:
+            cr->set_source_rgb(0, 1, 0);
+            break;
+        case 2:
+            cr->set_source_rgb(0, 0, 1);
+            break;
+        case 3:
+            cr->set_source_rgb(1, 1, 0);
+            break;
+        case 4:
+            cr->set_source_rgb(1, 0, 1);
+            break;
+        case 5:
+            cr->set_source_rgb(0.5, 0.5, 0.5);
+            break;
+        default:
+            cr->set_source_rgb(0, 0, 0);
     }
 }

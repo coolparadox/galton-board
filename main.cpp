@@ -38,7 +38,7 @@ const unsigned int ball_size = 25;
 const unsigned int peg_size = 4;
 
 // Length of ball color cycling (maximum 6)
-const unsigned int n_colors = 6;
+const unsigned int n_colors = 5;
 
 /*
  * Some parameters that are defined by the above settings:

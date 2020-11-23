@@ -34,7 +34,7 @@ GaltonBoardWindow::GaltonBoardWindow(BoardDrawingArea& boardDrawingArea, CreditM
       _boardDrawingArea(boardDrawingArea),
       _addCreditButton("CREDIT IN"),
       _withdrawCreditsButton("CREDITS OUT"),
-      _playButton("START"),
+      _playButton("RESUME"),
       _creditsInLabel("0"),
       _creditsOutLabel("0"),
       _nRoundsLabel("0"),
@@ -85,6 +85,7 @@ GaltonBoardWindow::GaltonBoardWindow(BoardDrawingArea& boardDrawingArea, CreditM
     frame_play->add(*box_play);
     box_play->pack_start(_nRoundsLabel);
     box_play->pack_start(_playButton);
+    _playButton.set_size_request(100, -1);  // Accomodate label changes
 
     // UI: refresh state
     refresh_controls();

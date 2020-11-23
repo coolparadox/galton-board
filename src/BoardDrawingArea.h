@@ -43,8 +43,11 @@ class BoardDrawingArea : public Gtk::DrawingArea
     unsigned int _n_colors;
     std::vector<Ball>& _grid;
 
+    void draw_background(const Cairo::RefPtr<Cairo::Context>& cr);
+    void draw_contour(const Cairo::RefPtr<Cairo::Context>& cr);
     void draw_pegs(const Cairo::RefPtr<Cairo::Context>& cr);
     void draw_balls(const Cairo::RefPtr<Cairo::Context>& cr);
+    void set_color_from_ball(const Cairo::RefPtr<Cairo::Context>& cr, const Ball& ball);
 
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
 
