@@ -50,7 +50,7 @@ bool CreditManager::can_withdraw() const
 
 bool CreditManager::can_play() const
 {
-    return _remaining_credits > 0;
+    return _is_playing || _remaining_credits > 0;
 }
 
 unsigned int CreditManager::get_remaining_credits() const
