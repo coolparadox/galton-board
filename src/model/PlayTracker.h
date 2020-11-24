@@ -25,24 +25,37 @@
 
 #include "Ball.h"
 
+/*
+ * PlayTracker triggers the steps of a simulation where balls fall in a Galton board.
+ */
 class PlayTracker
 {
 
  public:
-    PlayTracker(unsigned int n_levels, std::vector<Ball>& grid);
+    PlayTracker(unsigned int n_levels, std::vector<Ball>& balls);
     virtual ~PlayTracker();
 
+    // Remove all balls from the board, and add the first ball to the top position.
     void reset();
+    // Tell all balls to fall one level, and if there is room add another ball to the top position.
+    // Answer true if the board is not yet full.
     bool step();
 
  protected:
 
+    // Answer true or false with equal probability.
     bool get_random_toss();
 
+    // Number of levels of the board.
     unsigned int _n_levels;
+    // Id of the next ball that will be placed at the top of the board on the next simulation step.
     unsigned int _next_ball_id;
-    std::vector<Ball>& _grid;
+    // All balls currently in the board.
+    std::vector<Ball>& _balls;
 
+    /*
+     * Generation of pseudorandom numbers; used by get_random_toss().
+     */
     std::default_random_engine _gen;
     std::uniform_int_distribution<int> _dist;
 

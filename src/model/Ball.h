@@ -34,7 +34,7 @@ class Ball
     int get_displacement() const;
     int get_level() const;
     bool is_stuck() const;
-    bool fall(std::vector<Ball>& grid, unsigned int n_levels, bool toss);
+    bool fall(std::vector<Ball>& balls, unsigned int n_levels, bool toss);
 
  protected:
 

@@ -21,9 +21,9 @@
 #include <cassert>
 #include "PlayTracker.h"
 
-PlayTracker::PlayTracker(unsigned int n_levels, std::vector<Ball>& grid)
+PlayTracker::PlayTracker(unsigned int n_levels, std::vector<Ball>& balls)
     : _n_levels(n_levels),
-      _grid(grid),
+      _balls(balls),
       _next_ball_id(0),
       _dist(0,1)
 {
@@ -36,28 +36,31 @@ PlayTracker::~PlayTracker()
 
 void PlayTracker::reset()
 {
-    _grid.clear();
+    _balls.clear();
     _next_ball_id = 0;
-    _grid.emplace_back(_next_ball_id++);
+    _balls.emplace_back(_next_ball_id++);
 }
 
 bool PlayTracker::step()
 {
     bool has_room = true;
-    for (auto ball = _grid.begin(); ball != _grid.end(); ++ball)
+    // Loop over all balls starting by older ones (ie, more close to the bottom of the board)
+    for (auto ball = _balls.begin(); ball != _balls.end(); ++ball)
     {
+        // Take note if this is the top ball.
         bool is_top_ball = ball->get_level() == 0;
-        bool has_falled = ball->fall(_grid, _n_levels, get_random_toss());
+        // Ask the ball to fall one level.
+        bool has_falled = ball->fall(_balls, _n_levels, get_random_toss());
         if (is_top_ball && !has_falled)
         {
-            // The top ball has not moved to a lower level; the board is full.
+            // The top ball did not fall; assume the board is full.
             has_room = false;
         }
     }
     if (has_room)
     {
-        // Add another ball.
-        _grid.emplace_back(_next_ball_id++);
+        // The board is not yet full; add another ball at the top.
+        _balls.emplace_back(_next_ball_id++);
     }
     return has_room;
 }

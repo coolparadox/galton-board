@@ -25,30 +25,46 @@
 
 #include "model/Ball.h"
 
+/*
+ * BoardDrawingArea is a graphical 2D representation of a Galton board
+ * with positions eventually filled with balls.
+ */
 class BoardDrawingArea : public Gtk::DrawingArea
 {
 
  public:
 
-    BoardDrawingArea(unsigned int n_levels, std::vector<Ball>& grid, unsigned int ball_size,
+    BoardDrawingArea(unsigned int n_levels, std::vector<Ball>& balls, unsigned int ball_size,
             unsigned int peg_size, unsigned int n_colors);
     virtual ~BoardDrawingArea();
 
  protected:
 
+    // Number of levels of the board.
     unsigned int _n_levels;
+    // Balls that are currently in the board.
+    std::vector<Ball>& _balls;
+    // Diameter of each ball [pixels].
     unsigned int _ball_size;
+    // Diameter of each board peg [pixels].
     unsigned int _peg_size;
-    unsigned int _board_size;
+    // Number of distinct colors of the balls.
     unsigned int _n_colors;
-    std::vector<Ball>& _grid;
+    // Size of the board [pixels].
+    unsigned int _board_size;
 
+    // Draw the background of the widget.
     void draw_background(const Cairo::RefPtr<Cairo::Context>& cr);
+    // Draw the board contour.
     void draw_contour(const Cairo::RefPtr<Cairo::Context>& cr);
+    // Draw the board pegs.
     void draw_pegs(const Cairo::RefPtr<Cairo::Context>& cr);
+    // Draw the balls currently in the board.
     void draw_balls(const Cairo::RefPtr<Cairo::Context>& cr);
+    // Set the pen color for drawing a given ball.
     void set_color_from_ball(const Cairo::RefPtr<Cairo::Context>& cr, const Ball& ball);
 
+    // Drawing event handler.
     bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
 
 };

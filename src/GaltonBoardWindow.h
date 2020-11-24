@@ -29,6 +29,12 @@
 #include "model/CreditManager.h"
 #include "model/PlayTracker.h"
 
+/*
+ * GaltonBoardWindow is the main window of this application, comprising:
+ * - a Galton board representation
+ * - counters (credits, rounds)
+ * - control buttons
+ */
 class GaltonBoardWindow : public Gtk::Window
 {
 
@@ -40,23 +46,35 @@ class GaltonBoardWindow : public Gtk::Window
 
  protected:
 
-    void refresh_controls();
-    void on_add_credit_clicked();
-    void on_withdraw_credits_clicked();
-    void on_play_clicked();
-    bool on_play_timer(int timer_id);
-
-    int _play_timer_id;
-    sigc::connection _play_timer;
-
-    bool _is_playing;
-    bool _is_paused;
-    unsigned int _step_duration_ms;
-
     BoardDrawingArea& _boardDrawingArea;
     CreditManager _creditManager;
     PlayTracker _playTracker;
+    unsigned int _step_duration_ms;
 
+    // Refresh the state of counter labels and control buttons
+    void refresh_controls();
+    // Handler of the CREDIT IN button click event
+    void on_add_credit_clicked();
+    // Handler of the CREDITS OUT button click event
+    void on_withdraw_credits_clicked();
+    // Handler of the PLAY button click event
+    void on_play_clicked();
+    // Handler of simulation step timer
+    bool on_play_timer(int timer_id);
+
+    // Id of the simulation step timer
+    int _play_timer_id;
+    // Generator of periodic timer events
+    sigc::connection _play_timer;
+
+    // Is the simulation playing?
+    bool _is_playing;
+    // Is the simulation paused?
+    bool _is_paused;
+
+    /*
+     * Widgets that change or react to the application state
+     */
     Gtk::Label _creditsInLabel;
     Gtk::Label _creditsOutLabel;
     Gtk::Label _nRoundsLabel;

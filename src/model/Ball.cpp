@@ -54,7 +54,7 @@ bool Ball::is_stuck() const
     return _stuck;
 }
 
-bool Ball::fall(std::vector<Ball>& grid, unsigned int n_levels, bool toss)
+bool Ball::fall(std::vector<Ball>& balls, unsigned int n_levels, bool toss)
 {
     if (_stuck)
     {
@@ -72,7 +72,7 @@ bool Ball::fall(std::vector<Ball>& grid, unsigned int n_levels, bool toss)
     // Is there room to fall one more level?
     bool can_fall_left = true;
     bool can_fall_right = true;
-    for (auto ball = grid.cbegin(); ball != grid.cend(); ++ball)
+    for (auto ball = balls.cbegin(); ball != balls.cend(); ++ball)
     {
         if (ball->get_level() == _level + 1)
         {

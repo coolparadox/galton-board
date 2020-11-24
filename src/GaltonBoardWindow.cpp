@@ -107,27 +107,32 @@ GaltonBoardWindow::~GaltonBoardWindow()
 
 void GaltonBoardWindow::refresh_controls()
 {
-    // Refresh buttons
+    // Update the enablement of buttons
     _addCreditButton.set_sensitive(!_is_playing && _creditManager.can_deposit());
     _withdrawCreditsButton.set_sensitive(!_is_playing && _creditManager.can_withdraw());
     _playButton.set_sensitive(_creditManager.can_play());
+
+    // Update the semantic of the PLAY button
     if (_is_playing)
     {
         if (_is_paused)
         {
+            // Simulation is paused; reuse the PLAY button for resuming it.
             _playButton.set_label("RESUME");
         }
         else
         {
+            // Simulation is ongoing; reuse the PLAY button for pausing it.
             _playButton.set_label("PAUSE");
         }
     }
     else
     {
+        // Simulation is not happening; reuse the PLAY button for starting it.
         _playButton.set_label("START");
     }
 
-    // Refresh account balance
+    // Update exteriorization of the account balance
     _creditsInLabel.set_text(std::to_string(_creditManager.get_remaining_credits()));
     _creditsOutLabel.set_text(std::to_string(_creditManager.get_withdrawed_credits()));
     _nRoundsLabel.set_text(std::to_string(_creditManager.get_play_count()));
@@ -178,18 +183,21 @@ bool GaltonBoardWindow::on_play_timer(int timer_id)
 {
     if (!_is_playing || _is_paused)
     {
+        // Simulation is not happening or is paused; ignore the simulation timer.
         return true;
     }
     if (!_playTracker.step())
     {
-        // The simulation came to an end; stop the timer.
+        // The simulation came to an end; stop the simulation timer in order to stop generating events.
         _play_timer.disconnect();
         _play_timer_id = 0;
         _is_playing = false;
         _is_paused = false;
         _creditManager.register_play();
     }
+    // Draw the new state of the simulation.
     _boardDrawingArea.queue_draw();
+    // Refresh other widgets.
     refresh_controls();
     return true;
 

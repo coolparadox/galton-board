@@ -22,21 +22,27 @@
 
 #include "BoardDrawingArea.h"
 
+// Board margin, so balls near the border don't get cropped.
 const unsigned int BOARD_MARGIN = 10;
 
-BoardDrawingArea::BoardDrawingArea(unsigned int n_levels, std::vector<Ball>& grid,
+BoardDrawingArea::BoardDrawingArea(unsigned int n_levels, std::vector<Ball>& balls,
         unsigned int ball_size, unsigned int peg_size, unsigned int n_colors)
     : _n_levels(n_levels),
-      _grid(grid),
+      _balls(balls),
       _ball_size(ball_size),
       _peg_size(peg_size),
       _n_colors(n_colors)
 {
+    /*
+     * Sanity check the instantiation parameters.
+     */
     assert(_n_levels >= 2);
     assert(_n_colors > 0);
     assert(_n_colors <= 6);
     assert(_peg_size > 0);
     assert(_ball_size > _peg_size);
+
+    // Ensure the minimum size of the drawing area to contain the whole board representation.
     _board_size = _n_levels * (_ball_size + _peg_size) + _peg_size;
     set_size_request(_board_size + 2 * BOARD_MARGIN, _board_size + 2 * BOARD_MARGIN);
 }
@@ -57,6 +63,9 @@ bool BoardDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 
 void BoardDrawingArea::draw_background(const Cairo::RefPtr<Cairo::Context>& cr)
 {
+    /*
+     * Just paint the whole area with a solid neutral color.
+     */
     cr->save();
     cr->set_source_rgb(0.5, 0.5, 0.5);
     cr->set_line_width(1);
@@ -72,6 +81,9 @@ void BoardDrawingArea::draw_background(const Cairo::RefPtr<Cairo::Context>& cr)
 
 void BoardDrawingArea::draw_contour(const Cairo::RefPtr<Cairo::Context>& cr)
 {
+    /*
+     * Paint a white background where animation will occur.
+     */
     cr->save();
     cr->set_line_width(1);
     cr->set_source_rgb(1, 1, 1);
@@ -86,6 +98,10 @@ void BoardDrawingArea::draw_contour(const Cairo::RefPtr<Cairo::Context>& cr)
 
 void BoardDrawingArea::draw_pegs(const Cairo::RefPtr<Cairo::Context>& cr)
 {
+    /*
+     * A Galton board is filled with pegs that serve as barriers for falling balls.
+     * Represent them as gray circles.
+     */
     cr->save();
     cr->set_line_width(1);
     cr->set_source_rgb(0.5, 0.5, 0.5);
@@ -107,7 +123,11 @@ void set_color_from_ball(const Cairo::RefPtr<Cairo::Context>& cr, const Ball& ba
 
 void BoardDrawingArea::draw_balls(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-    for (auto ball = _grid.cbegin(); ball != _grid.cend(); ++ball)
+    /*
+     * Draw the current state of balls in the board.
+     * Each ball can tell its color, level and displacement in the board.
+     */
+    for (auto ball = _balls.cbegin(); ball != _balls.cend(); ++ball)
     {
         cr->save();
         cr->set_line_width(1.0);
@@ -123,27 +143,38 @@ void BoardDrawingArea::draw_balls(const Cairo::RefPtr<Cairo::Context>& cr)
 
 void BoardDrawingArea::set_color_from_ball(const Cairo::RefPtr<Cairo::Context>& cr, const Ball& ball)
 {
+    /*
+     * Make the color of balls cycle according to the progression of their ids.
+     * The length of the color cycling is given by _n_colors.
+     */
     switch (ball.get_id() % _n_colors)
     {
         case 0:
+            // Red.
             cr->set_source_rgb(1, 0, 0);
             break;
         case 1:
+            // Green.
             cr->set_source_rgb(0, 1, 0);
             break;
         case 2:
+            // Blue.
             cr->set_source_rgb(0, 0, 1);
             break;
         case 3:
+            // Yellow.
             cr->set_source_rgb(1, 1, 0);
             break;
         case 4:
+            // Magenta.
             cr->set_source_rgb(1, 0, 1);
             break;
         case 5:
+            // Gray.
             cr->set_source_rgb(0.5, 0.5, 0.5);
             break;
         default:
+            // This point of the code should never be reached.
             cr->set_source_rgb(0, 0, 0);
     }
 }

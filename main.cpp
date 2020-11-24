@@ -55,9 +55,16 @@ const unsigned int n_colors = 5;
 
 int main(int argc, char *argv[])
 {
+
+    // Main graphic application
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "coolparadox.com.games.galton-board");
-    std::vector<Ball> grid;
-    BoardDrawingArea boardDrawingArea(n_levels, grid, ball_size, peg_size, n_colors);
-    GaltonBoardWindow window(boardDrawingArea, CreditManager(), PlayTracker(n_levels, grid), step_duration_ms);
+
+    // Instantiate the main window
+    std::vector<Ball> balls;
+    BoardDrawingArea boardDrawingArea(n_levels, balls, ball_size, peg_size, n_colors);
+    GaltonBoardWindow window(boardDrawingArea, CreditManager(), PlayTracker(n_levels, balls), step_duration_ms);
+
+    // Enter the application event loop
     return app->run(window);
+
 }

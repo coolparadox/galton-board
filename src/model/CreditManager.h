@@ -21,6 +21,9 @@
 #ifndef SRC_MODEL_GAMEMANAGER_H
 #define SRC_MODEL_GAMEMANAGER_H
 
+/*
+ * CreditManager manages the credit balance.
+ */
 class CreditManager
 {
 
@@ -28,16 +31,25 @@ class CreditManager
     CreditManager();
     virtual ~CreditManager();
 
+    // Can credits be deposited?
     bool can_deposit() const;
+    // Are there credits to withdraw?
     bool can_withdraw() const;
+    // Are these enough credits to play the simulation?
     bool can_play() const;
 
+    // Query the current credit balance.
     unsigned int get_remaining_credits() const;
+    // Query the total number of withdrawed credits since the start of the application,
     unsigned int get_withdrawed_credits() const;
+    // Query the total number of times the simulation was played since the start of the application.
     unsigned int get_play_count() const;
 
+    // Add one credit to the balance.
     void add_credit();
+    // Withdraw all credits from the balance.
     void withdraw_credits();
+    // Acknowledge that one simulation was played.
     void register_play();
 
  protected:
