@@ -37,6 +37,8 @@ class CreditManager
     bool can_withdraw() const;
     // Are these enough credits to play the simulation?
     bool can_play() const;
+    // Is the simulation playing?
+    bool is_playing() const;
 
     // Query the current credit balance.
     unsigned int get_remaining_credits() const;
@@ -49,13 +51,16 @@ class CreditManager
     void add_credit();
     // Withdraw all credits from the balance.
     void withdraw_credits();
-    // Acknowledge that one simulation was played.
-    void register_play();
+    // Acknowledge that one simulation was started.
+    void acknowledge_play_start();
+    // Acknowledge that one simulation was ended.
+    void acknowledge_play_end();
 
  protected:
     unsigned int _remaining_credits;
     unsigned int _withdrawed_credits;
     unsigned int _play_counter;
+    bool _is_playing;
 
 };
 

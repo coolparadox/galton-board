@@ -18,6 +18,8 @@
 * along with galton-board  If not, see <http://www.gnu.org/licenses/>
 */
 
+#include <cassert>
+
 #include <gtkmm/box.h>
 #include <gtkmm/buttonbox.h>
 #include <gtkmm/frame.h>
@@ -27,7 +29,8 @@
 CreditManager::CreditManager()
     : _remaining_credits(0),
       _withdrawed_credits(0),
-      _play_counter(0)
+      _play_counter(0),
+      _is_playing(false)
 {
 }
 
@@ -79,12 +82,22 @@ void CreditManager::withdraw_credits()
     }
 }
 
-void CreditManager::register_play()
+void CreditManager::acknowledge_play_start()
 {
-    if (can_play())
-    {
-        _remaining_credits -= 1;
-        _play_counter += 1;
-    }
+    assert(can_play());
+    assert(!_is_playing);
+    _is_playing = true;
+    _remaining_credits -= 1;
 }
 
+void CreditManager::acknowledge_play_end()
+{
+    assert(_is_playing);
+    _play_counter += 1;
+    _is_playing = false;
+}
+
+bool CreditManager::is_playing() const
+{
+    return _is_playing;
+}

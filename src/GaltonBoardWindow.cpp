@@ -39,7 +39,6 @@ GaltonBoardWindow::GaltonBoardWindow(BoardDrawingArea& boardDrawingArea, CreditM
       _creditsOutLabel("0"),
       _nRoundsLabel("0"),
       _play_timer_id(0),
-      _is_playing(false),
       _is_paused(false),
       _step_duration_ms(step_duration_ms)
 {
@@ -108,12 +107,12 @@ GaltonBoardWindow::~GaltonBoardWindow()
 void GaltonBoardWindow::refresh_controls()
 {
     // Update the enablement of buttons
-    _addCreditButton.set_sensitive(!_is_playing && _creditManager.can_deposit());
-    _withdrawCreditsButton.set_sensitive(!_is_playing && _creditManager.can_withdraw());
+    _addCreditButton.set_sensitive(!_creditManager.is_playing() && _creditManager.can_deposit());
+    _withdrawCreditsButton.set_sensitive(!_creditManager.is_playing() && _creditManager.can_withdraw());
     _playButton.set_sensitive(_creditManager.can_play());
 
     // Update the semantic of the PLAY button
-    if (_is_playing)
+    if (_creditManager.is_playing())
     {
         if (_is_paused)
         {
@@ -152,14 +151,14 @@ void GaltonBoardWindow::on_withdraw_credits_clicked()
 
 void GaltonBoardWindow::on_play_clicked()
 {
-    if (_is_playing && _is_paused)
+    if (_creditManager.is_playing() && _is_paused)
     {
         // Simulation is paused; resume it.
         _is_paused = false;
         return;
     }
 
-    if (_is_playing)
+    if (_creditManager.is_playing())
     {
         // Simulation is ongoing; pause it.
         _is_paused = true;
@@ -168,7 +167,7 @@ void GaltonBoardWindow::on_play_clicked()
     }
 
     // Simulation is not happening; start it.
-    _is_playing = true;
+    _creditManager.acknowledge_play_start();
     _is_paused = false;
     _playTracker.reset();
 
@@ -181,7 +180,7 @@ void GaltonBoardWindow::on_play_clicked()
 
 bool GaltonBoardWindow::on_play_timer(int timer_id)
 {
-    if (!_is_playing || _is_paused)
+    if (!_creditManager.is_playing() || _is_paused)
     {
         // Simulation is not happening or is paused; ignore the simulation timer.
         return true;
@@ -191,9 +190,8 @@ bool GaltonBoardWindow::on_play_timer(int timer_id)
         // The simulation came to an end; stop the simulation timer in order to stop generating events.
         _play_timer.disconnect();
         _play_timer_id = 0;
-        _is_playing = false;
         _is_paused = false;
-        _creditManager.register_play();
+        _creditManager.acknowledge_play_end();
     }
     // Draw the new state of the simulation.
     _boardDrawingArea.queue_draw();

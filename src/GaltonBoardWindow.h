@@ -67,8 +67,6 @@ class GaltonBoardWindow : public Gtk::Window
     // Generator of periodic timer events
     sigc::connection _play_timer;
 
-    // Is the simulation playing?
-    bool _is_playing;
     // Is the simulation paused?
     bool _is_paused;
 
