@@ -23,17 +23,34 @@
 
 #include <random>
 
+/*
+ * A Ball is an entity that mimics falling in a Galton board,
+ * ie, when falling it randomly chooses a unit horizontal displacement
+ * as if its fall was being interrupted by a peg.
+ */
 class Ball
 {
 
  public:
+    // When constructing, a Ball remembers its ID and has zero displacement and level values
+    // (ie, it's at the top of the board).
     Ball(unsigned int id);
     virtual ~Ball();
 
+    // Query the Ball's ID.
     unsigned int get_id() const;
+    // Query the Ball's horizontal displacement.
     int get_displacement() const;
+    // Query the Ball's vertical displacement.
     int get_level() const;
+    // Is the Ball blocked from falling to a lower level?
     bool is_stuck() const;
+    // Tell the Ball to fall to the next lower level.
+    // Parameters:
+    // - balls: all balls currently in the board
+    // - n_levels: number of levels of the board
+    // - toss: true or false, uniformly distributed
+    // Returns true if the Ball succeeded in falling one level.
     bool fall(std::vector<Ball>& balls, unsigned int n_levels, bool toss);
 
  protected:

@@ -69,9 +69,11 @@ bool Ball::fall(std::vector<Ball>& balls, unsigned int n_levels, bool toss)
         _stuck = true;
         return false;
     }
-    // Is there room to fall one more level?
+    // When falling, the Ball must behave as if there is a peg blocking its free fall
+    // and choose a side to hang around the peg.
     bool can_fall_left = true;
     bool can_fall_right = true;
+    // Is there room to fall one more level?
     for (auto ball = balls.cbegin(); ball != balls.cend(); ++ball)
     {
         if (ball->get_level() == _level + 1)
@@ -92,8 +94,8 @@ bool Ball::fall(std::vector<Ball>& balls, unsigned int n_levels, bool toss)
     }
     if (can_fall_left && can_fall_right)
     {
-        // There are two possible empty positions below.
-        // Assume the toss is random and use it to choose a side.
+        // There are two possible empty positions in the next lower level to be occupied.
+        // Assume that the toss parameter is random and use it to choose a side.
         if (toss)
         {
             can_fall_left = false;
@@ -107,15 +109,17 @@ bool Ball::fall(std::vector<Ball>& balls, unsigned int n_levels, bool toss)
     _level += 1;
     if (_level >= max_level)
     {
-        // This is the last level
+        // This is the last level of the board.
         _stuck = true;
     }
     if (can_fall_left)
     {
+        // Let's hang to the left when falling.
         _displacement -= 1;
     }
     else
     {
+        // Let's hang to the right when falling.
         _displacement += 1;
     }
     return true;
