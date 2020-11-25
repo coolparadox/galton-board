@@ -3,8 +3,6 @@ Simple simulation of balls falling in a Galton board
 
 # Build & Run
 
-## Natively
-
     $ ./autosetup.sh
     $ ./configure
     $ make
