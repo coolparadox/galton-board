@@ -22,4 +22,4 @@
 set -e
 mkdir -p m4
 set -x
-exec autoreconf --install --symlink $*
+exec autoreconf --force --install --symlink $*
