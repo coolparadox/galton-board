@@ -24,7 +24,7 @@ ACLOCAL_AMFLAGS = -I m4
 totalclean: maintainer-clean
 	-rm -f *.in~
 	-rm -f aclocal.m4 ar-lib compile config.guess config.h.in config.sub configure depcomp install-sh ltmain.sh missing
-	-rm -rf m4/ doc/
+	-rm -rf m4/
 	-find . -type f -name Makefile.in -delete
 	-find . -type f -name Makefile -delete
 	-find . -depth -type d -name .deps -exec rm -rf '{}' ';'
