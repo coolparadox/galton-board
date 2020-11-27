@@ -20,7 +20,7 @@ RUN apt-get --yes --no-upgrade --no-install-recommends install apt-utils
 RUN apt-get --yes --no-upgrade --no-install-recommends install libgtkmm-3.0
 
 FROM base as builder
-RUN apt-get --yes --no-upgrade --no-install-recommends install autoconf automake libtool g++ make autoconf-archive
+RUN apt-get --yes --no-upgrade --no-install-recommends install autoconf automake g++ make autoconf-archive
 RUN apt-get --yes --no-upgrade --no-install-recommends install libgtkmm-3.0-dev
 ADD autosetup.sh configure.ac LICENSE main.cpp Makefile.am README.md src /root/build/
 ADD src /root/build/src/

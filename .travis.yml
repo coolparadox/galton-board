@@ -1,0 +1,7 @@
+os: linux
+sudo: required
+language: c
+services:
+- docker
+script:
+- docker build -t project .

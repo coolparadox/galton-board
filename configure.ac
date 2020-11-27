@@ -28,7 +28,6 @@ AC_CONFIG_HEADERS([config.h])
 AC_SUBST([PROJECT_BRIEF], ["game-like galton board simulator"])
 
 AM_PROG_AR
-LT_INIT
 AC_PROG_CXX
 AC_LANG([C++])
 
