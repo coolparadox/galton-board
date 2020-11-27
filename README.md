@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/coolparadox/galton-board.svg?branch=main)](https://travis-ci.org/coolparadox/galton-board)
+
 # galton-board
 Simple simulation of balls falling in a Galton board
 
